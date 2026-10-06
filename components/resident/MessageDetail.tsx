@@ -1,7 +1,8 @@
 "use client";
 
 import { Icon } from "@/components/ui/Icon";
-import { decorateMessage, detailMessage } from "@/lib/messages";
+import { visuallyHidden } from "@/components/ui/VisuallyHidden";
+import { confirmedExternalUrl, decorateMessage, detailMessage } from "@/lib/messages";
 import { useAppActions, useAppState } from "@/lib/store";
 import type { IconName } from "@/types";
 
@@ -21,7 +22,10 @@ function Fact({ icon, label, value, last }: { icon: IconName; label: string; val
 export function MessageDetail() {
   const state = useAppState();
   const { dispatch } = useAppActions();
-  const d = decorateMessage(state, detailMessage(state));
+  const message = detailMessage(state);
+  const d = decorateMessage(state, message);
+  /* Link do oficjalnej strony pokazujemy tylko dla potwierdzonego adresu w rekordzie – nie tworzymy adresów. */
+  const externalUrl = confirmedExternalUrl(message);
 
   return (
     <div style={{ padding: "18px 20px 32px", display: "flex", flexDirection: "column", gap: 16 }}>
@@ -50,6 +54,11 @@ export function MessageDetail() {
       )}
       {d.hasAction && (
         <button className="btn" style={{ width: "100%", minHeight: 54 }} onClick={() => dispatch({ type: "actOnMessage", id: d.id })}>{d.btn}<Icon name="arrowR" size={18} /></button>
+      )}
+      {externalUrl && (
+        <a className="btn2" data-external href={externalUrl} target="_blank" rel="noopener noreferrer" style={{ width: "100%", minHeight: 54, textDecoration: "none" }}>
+          {message.officialUrlLabel || "Przejdź do strony wydarzenia"}<Icon name="ext" size={18} /><span style={visuallyHidden}>(strona zewnętrzna, otwiera się w nowej karcie)</span>
+        </a>
       )}
       {d.hasLink && (
         <div style={{ border: "1.5px dashed #D9A441", background: "#FFFBF0", borderRadius: 14, padding: "12px 14px", display: "flex", flexDirection: "column", gap: 6 }}>

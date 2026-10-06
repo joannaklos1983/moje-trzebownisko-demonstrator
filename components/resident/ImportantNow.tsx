@@ -29,7 +29,7 @@ export function ImportantNow() {
 
       {big ? (
         <div style={{ marginTop: 12, border: `1.5px solid ${card.border}`, borderRadius: 18, overflow: "hidden", background: "#FFFFFF" }}>
-          <div style={{ background: card.bg, padding: "18px 18px 16px", display: "flex", flexDirection: "column", gap: 8 }}>
+          <div data-important-card style={{ position: "relative", background: card.bg, padding: "18px 18px 16px", display: "flex", flexDirection: "column", gap: 8 }}>
             <div style={{ display: "flex", alignItems: "flex-start", gap: 8 }}>
               <div style={{ flex: 1, minWidth: 0, display: "flex", alignItems: "center", gap: "4px 8px", flexWrap: "wrap" }}>
                 <span className="pill" style={{ background: card.pillBg, color: card.pillFg }}><Icon name={big.typeIcon} size={15} />{big.typeLabel}</span>
@@ -37,14 +37,15 @@ export function ImportantNow() {
               </div>
               <span className="st" style={{ flex: "none", marginTop: 2, background: big.stBg, color: big.stFg }}>{big.statusLabel}</span>
             </div>
-            <h3 style={{ margin: "2px 0 0", fontSize: 20, lineHeight: 1.25, fontWeight: 700 }}>{big.title}</h3>
+            {/* tytuł jest przyciskiem rozciągniętym na całą kartę: tapnięcie w dowolne miejsce otwiera szczegół */}
+            <h3 style={{ margin: "2px 0 0", fontSize: 20, lineHeight: 1.25, fontWeight: 700 }}><button className="stretched" style={{ fontWeight: 700 }} onClick={() => dispatch({ type: "openMessage", id: big.id })}>{big.title}</button></h3>
             <p style={{ margin: 0, fontSize: 15, lineHeight: 1.45, color: "#3C474C" }}>{big.text}</p>
             <div style={{ display: "flex", alignItems: "flex-end", gap: 10, marginTop: 4 }}>
               <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 6, fontSize: 14.5, minWidth: 0 }}>
                 <span style={{ display: "flex", alignItems: "center", gap: 8 }}><Icon name="pin" size={18} style={{ color: "#5A6670" }} />{big.place}</span>
                 <span style={{ display: "flex", alignItems: "center", gap: 8 }}><Icon name="clock" size={18} style={{ color: "#5A6670" }} />{big.when}</span>
               </div>
-              <button className="btn" style={{ padding: "12px 16px", fontSize: 15, flex: "none" }} onClick={() => dispatch({ type: "actOnMessage", id: big.id })}>{big.btn}<Icon name="chevR" size={18} /></button>
+              <button className="btn above-stretched" style={{ padding: "12px 16px", fontSize: 15, flex: "none" }} onClick={() => dispatch({ type: "actOnMessage", id: big.id })}>{big.btn}<Icon name="chevR" size={18} /></button>
             </div>
           </div>
           {rest.map((r, i) => (
