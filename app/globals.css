@@ -103,3 +103,22 @@ a:hover {
 .a-side{display:flex;align-items:center;gap:10px;font-size:13px;padding:8px 10px;border-radius:8px;color:#3C474C}
 .tbtn{border:1px solid #CFD8D3;background:#fff;border-radius:8px;font-size:13px;font-weight:600;padding:7px 12px;min-height:36px}
 .tbtn[aria-pressed="true"]{background:#2F824F;border-color:#2F824F;color:#fff}
+
+/* ---------- Dodane po migracji ---------- */
+
+/* Cała karta klikalna: przycisk z tytułem rozciąga się na kartę; inne przyciski w karcie leżą nad nim. */
+.stretched{background:none;border:0;padding:0;margin:0;text-align:left;font:inherit;color:inherit;display:block;width:100%}
+.stretched::after{content:'';position:absolute;inset:0;border-radius:inherit}
+.stretched:focus-visible{outline:none}
+.stretched:focus-visible::after{outline:3px solid #137FB0;outline-offset:-3px}
+.above-stretched{position:relative;z-index:1}
+
+/* Dzień w widoku miesiąca: prawdziwy przycisk, pole dotykowe co najmniej 44 px. */
+.cal-day{background:none;border:0;padding:2px 0 4px;margin:0;min-height:48px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;border-radius:12px;color:#1F2A2E}
+.cal-day:hover{background:#F5F8F4}
+.cal-day[data-inrange]{background:#EEF7F0;border-radius:0}
+.cal-num{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:500;border:2px solid transparent}
+.cal-day[data-today] .cal-num{border-color:#2F824F;font-weight:700;color:#1F6B3D}
+.cal-day[aria-pressed="true"] .cal-num{background:#2F824F;border-color:#2F824F;color:#fff;font-weight:700;text-decoration:underline;text-underline-offset:3px}
+.cal-dot{width:6px;height:6px;border-radius:50%;background:transparent}
+.cal-day:not([data-events="0"]) .cal-dot{background:#2F824F}

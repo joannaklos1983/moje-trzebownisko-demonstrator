@@ -11,9 +11,9 @@ export function BottomNav() {
   const isTab = screen === "search" || screen === "calendar" || screen === "fav" || screen === "profile";
   const current = isTab ? screen : "home";
   return (
-    <nav aria-label="Nawigacja główna" style={{ flex: "none", display: "flex", borderTop: "1px solid #E6ECE8", background: "#FFFFFF", padding: "4px 6px 10px" }}>
+    <nav aria-label="Nawigacja główna" style={{ flex: "none", display: "flex", borderTop: "1px solid #E6ECE8", background: "#FFFFFF", padding: "4px 2px 10px" }}>
       {NAV_TABS.map((t) => (
-        <button key={t.id} className="navb" aria-current={current === t.id ? "page" : "false"} onClick={() => dispatch({ type: "tab", screen: t.id })}>
+        <button key={t.id} className="navb" style={{ fontSize: 12.5, minWidth: 0 }} aria-current={current === t.id ? "page" : "false"} onClick={() => dispatch({ type: "tab", screen: t.id })}>
           <span className="navi"><Icon name={t.icon} size={24} /></span>
           {t.label}
         </button>
