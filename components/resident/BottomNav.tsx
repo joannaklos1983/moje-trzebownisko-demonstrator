@@ -8,7 +8,7 @@ import { useAppActions, useAppState } from "@/lib/store";
 export function BottomNav() {
   const { screen } = useAppState();
   const { dispatch } = useAppActions();
-  const isTab = screen === "search" || screen === "fav" || screen === "profile";
+  const isTab = screen === "search" || screen === "calendar" || screen === "fav" || screen === "profile";
   const current = isTab ? screen : "home";
   return (
     <nav aria-label="Nawigacja główna" style={{ flex: "none", display: "flex", borderTop: "1px solid #E6ECE8", background: "#FFFFFF", padding: "4px 6px 10px" }}>

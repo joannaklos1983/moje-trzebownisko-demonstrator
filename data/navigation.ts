@@ -4,6 +4,8 @@ import type { NavTab, QuickLink, ScreenId, StubDef, StubKey } from "../types";
 export const NAV_TABS: NavTab[] = [
   { id: "home", label: "Start", icon: "home" },
   { id: "search", label: "Szukaj", icon: "search" },
+  /* dodane po migracji: wspólny kalendarz wydarzeń (DO SPRAWDZENIA) */
+  { id: "calendar", label: "Kalendarz", icon: "cal" },
   { id: "fav", label: "Ulubione", icon: "star" },
   { id: "profile", label: "Profil", icon: "user" },
 ];
@@ -15,6 +17,7 @@ export const SCREEN_TITLES: Partial<Record<ScreenId, string>> = {
   reports: "Zgłoszenia",
   waste: "Odpady",
   search: "Szukaj",
+  calendar: "Kalendarz",
   fav: "Ulubione",
   profile: "Profil",
   stub: "",

@@ -10,7 +10,7 @@ export function SubHeader() {
   const state = useAppState();
   const { dispatch } = useAppActions();
   const { screen, stubKey } = state;
-  const isTab = screen === "search" || screen === "fav" || screen === "profile";
+  const isTab = screen === "search" || screen === "calendar" || screen === "fav" || screen === "profile";
   const showBell = isTab || screen === "waste" || screen === "reports";
   const title = screen === "stub" ? STUBS[stubKey || "about"].title : SCREEN_TITLES[screen] || "";
 

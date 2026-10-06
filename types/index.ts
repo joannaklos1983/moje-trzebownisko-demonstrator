@@ -125,6 +125,7 @@ export type ScreenId =
   | "reports"
   | "waste"
   | "search"
+  | "calendar"
   | "fav"
   | "profile"
   | "stub";
@@ -140,7 +141,7 @@ export type StubKey =
   | "register"
   | "about";
 
-export type TabId = "home" | "search" | "fav" | "profile";
+export type TabId = "home" | "search" | "calendar" | "fav" | "profile";
 
 export interface NavTab {
   id: TabId;

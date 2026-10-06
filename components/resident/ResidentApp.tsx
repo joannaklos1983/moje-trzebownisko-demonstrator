@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { BottomNav } from "@/components/resident/BottomNav";
+import { CalendarScreen } from "@/components/resident/CalendarScreen";
 import { EntryScreen } from "@/components/resident/EntryScreen";
 import { HomeHeader } from "@/components/resident/HomeHeader";
 import { HomeScreen } from "@/components/resident/HomeScreen";
@@ -37,7 +38,7 @@ export function ResidentApp() {
         {screen !== "entry" && screen !== "home" && (
           <>
             <SubHeader />
-            {screen === "notifs" ? <NotificationsScreen /> : screen === "detail" ? <MessageDetail /> : screen === "search" ? <SearchScreen /> : <PendingScreen />}
+            {screen === "notifs" ? <NotificationsScreen /> : screen === "detail" ? <MessageDetail /> : screen === "search" ? <SearchScreen /> : screen === "calendar" ? <CalendarScreen /> : <PendingScreen />}
           </>
         )}
       </div>
