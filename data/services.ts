@@ -37,4 +37,5 @@ export const TONES: Record<TileStyle, Record<ServiceTone, ToneDef>> = {
 /* Domyślne ustawienia pulpitu (w Claude Design były to właściwości edytora):
    A – Powiadomienia jako kafel, B – bez kafla Powiadomienia. */
 export const DEFAULT_SERVICE_VARIANT: ServiceVariant = "A";
-export const DEFAULT_TILE_STYLE: TileStyle = "pastelowe";
+/* Zmiana po migracji (5B.1): domyślnie kafle nasycone; demonstrator referencyjny ma pastelowe. */
+export const DEFAULT_TILE_STYLE: TileStyle = "nasycone";
