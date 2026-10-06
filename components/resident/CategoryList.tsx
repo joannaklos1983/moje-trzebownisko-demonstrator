@@ -7,7 +7,8 @@ import { useAppActions, useAppState } from "@/lib/store";
 
 /* Kategorie = „czego szukam / co mnie interesuje?”. Nie są modułami:
    nazwa otwiera Powiadomienia przefiltrowane kategorią, gwiazdka dodaje kategorię do Ulubionych.
-   Obserwowanie kategorii nie włącza powiadomień push, SMS ani e-mail.
+   Obserwowanie kategorii nie włącza powiadomień push, SMS ani e-mail – informacja o tym
+   będzie na ekranie Ulubione / w ustawieniach powiadomień, nie na Starcie.
    Zestaw i kolejność pochodzą z data/categories.ts. */
 export function CategoryList() {
   const { favs } = useAppState();
@@ -47,8 +48,6 @@ export function CategoryList() {
           <Icon name="chevD" size={18} style={{ transform: expanded ? "rotate(180deg)" : undefined }} />
         </button>
       )}
-
-      <p style={{ margin: "4px 0 0", fontSize: 12.5, color: "#5A6670", lineHeight: 1.45 }}>Obserwowanie kategorii nie włącza powiadomień push, SMS ani e-mail.</p>
     </section>
   );
 }
