@@ -17,8 +17,11 @@
   --ugt-green-hover: #23673D;
   --demo-backdrop: #E9EDEA;
 
-  /* 4.1 Font marki; Arial jako fallback (4.5) */
-  --font-brand: var(--font-montserrat), Arial, sans-serif;
+  /* 4.1 Font marki; Arial jako fallback (4.5).
+     Rodzina „Montserrat” jest ładowana w app/layout.tsx. Celowo pomijamy „Montserrat Fallback”
+     (Arial przeskalowany do metryk Montserrat): znaki spoza Montserrat, np. →, mają mieć
+     zwykłą szerokość Ariala, jak w demonstratorze referencyjnym. */
+  --font-brand: "Montserrat", Arial, sans-serif;
 }
 
 * {

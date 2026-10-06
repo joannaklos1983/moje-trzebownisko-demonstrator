@@ -3,8 +3,12 @@
 Status: **PROTOTYP / KONCEPCJA**. Migracja 1:1 demonstratora z Claude Design do Next.js + TypeScript.
 Wersja referencyjna (zamrożona): `../moje-trzebownisko-demonstrator/`.
 
-Stan: checkpoint 5B – działają ekran wejściowy, Start mieszkańca, Powiadomienia i szczegół komunikatu.
-Pozostałe ekrany pokazują planszę „MIGRACJA W TOKU”; panel administratora i pasek „Czas demo” nie są jeszcze przeniesione.
+Stan: etap 5C – działają ekran wejściowy, Start mieszkańca, Powiadomienia, szczegół komunikatu,
+panel administratora z publikacją kampanii oraz pasek „Czas demo” (7:30 / 10:30 / 15:00) i „Resetuj demo”.
+Odpady, Zgłoszenia, Szukaj, Ulubione, Profil i zaślepki modułów pokazują jeszcze planszę „MIGRACJA W TOKU”.
+
+Świadome zmiany względem demonstratora referencyjnego: nasycone kafle Usług, kafel Karty Mieszkańca z grafiką,
+zielona ramka „Ważne teraz” (czerwona tylko dla Alertu RCB), Kategorie jako lista z gwiazdką Ulubionych.
 
 ## Uruchomienie
 
