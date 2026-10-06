@@ -27,6 +27,9 @@ export const MAIN_CATEGORIES: Category[] = [
   "Urząd / dla mieszkańca",
 ];
 
+/* Ile kategorii widać na Starcie przed kliknięciem „Pokaż wszystkie kategorie” (dodane po migracji). */
+export const CATEGORIES_COLLAPSED_COUNT = 3;
+
 export const CATEGORY_ICON: Record<Category, IconName> = {
   "Woda i awarie": "drop",
   "Odpady": "trash",

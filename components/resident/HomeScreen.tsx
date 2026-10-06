@@ -1,6 +1,6 @@
 "use client";
 
-import { CategoryChips } from "@/components/resident/CategoryChips";
+import { CategoryList } from "@/components/resident/CategoryList";
 import { ImportantNow } from "@/components/resident/ImportantNow";
 import { LocalitySelect } from "@/components/resident/LocalitySelect";
 import { ServicesGrid } from "@/components/resident/ServicesGrid";
@@ -23,7 +23,7 @@ export function HomeScreen() {
 
       <ImportantNow />
       <ServicesGrid />
-      <CategoryChips />
+      <CategoryList />
     </div>
   );
 }
