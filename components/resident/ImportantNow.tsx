@@ -9,8 +9,12 @@ import { useAppActions, useAppState } from "@/lib/store";
 export function ImportantNow() {
   const state = useAppState();
   const { dispatch } = useAppActions();
-  const items = importantNow(state).map((m) => decorateMessage(state, m));
-  const [big, ...rest] = items;
+  const messages = importantNow(state);
+  const [big, ...rest] = messages.map((m) => decorateMessage(state, m));
+  /* Ramka oznacza ekspozycję w „Ważne teraz” (zieleń Gminy), a nie typ komunikatu.
+     Czerwień jest zarezerwowana dla Alertu RCB – tylko wtedy ramka bierze kolor typu.
+     Etykieta typu i tło karty zachowują kolory typu. */
+  const frameColor = messages[0]?.type === "Alert" ? big.bigBorder : "var(--ugt-green)";
 
   return (
     <section style={{ padding: "26px 20px 0" }}>
@@ -20,7 +24,7 @@ export function ImportantNow() {
       </div>
 
       {big ? (
-        <div style={{ marginTop: 12, border: `1.5px solid ${big.bigBorder}`, borderRadius: 18, overflow: "hidden", background: "#FFFFFF" }}>
+        <div style={{ marginTop: 12, border: `1.5px solid ${frameColor}`, borderRadius: 18, overflow: "hidden", background: "#FFFFFF" }}>
           <div style={{ background: big.bigBg, padding: "18px 18px 16px", display: "flex", flexDirection: "column", gap: 8 }}>
             <div style={{ display: "flex", alignItems: "flex-start", gap: 8 }}>
               <div style={{ flex: 1, minWidth: 0, display: "flex", alignItems: "center", gap: "4px 8px", flexWrap: "wrap" }}>
