@@ -7,7 +7,14 @@ export const SERVICES: ServiceDef[] = [
   { id: "notifs", label: "Powiado­mienia", icon: "bell", tone: "blue", target: "notifs", onlyVariantA: true },
   { id: "waste", label: "Odpady", icon: "trash", tone: "lime", target: "waste" },
   { id: "evoting", label: "E-voting", icon: "vote", tone: "sky", target: "stub:evoting" },
-  { id: "card", label: "Karta Mieszkańca", icon: "idcard", tone: "light", target: "stub:card", badge: "DO SPRAWDZENIA" },
+  /* DODANE PO MIGRACJI (nie ma w demonstratorze referencyjnym): kafel jest samą grafiką karty
+     z napisem „Dostępna wkrótce”. Etykieta, ikona i „DO SPRAWDZENIA” nie są wtedy pokazywane na kaflu
+     (zostają w danych; ekran Karty Mieszkańca nadal informuje, że funkcja nie jest potwierdzona). */
+  {
+    id: "card", label: "Karta Mieszkańca", icon: "idcard", tone: "light", target: "stub:card", badge: "DO SPRAWDZENIA",
+    note: "Dostępna wkrótce",
+    image: { src: "/assets/karta-mieszkanca.jpg", width: 716, height: 432 },
+  },
 ];
 
 export const TONES: Record<TileStyle, Record<ServiceTone, ToneDef>> = {
