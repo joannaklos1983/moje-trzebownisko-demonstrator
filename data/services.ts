@@ -28,7 +28,9 @@ export const TONES: Record<TileStyle, Record<ServiceTone, ToneDef>> = {
   nasycone: {
     green: { bg: "#2F824F", border: "#2F824F", iconBg: "rgba(255,255,255,.18)", iconFg: "#FFFFFF", fg: "#FFFFFF" },
     blue: { bg: "#137FB0", border: "#137FB0", iconBg: "rgba(255,255,255,.18)", iconFg: "#FFFFFF", fg: "#FFFFFF" },
-    lime: { bg: "#75A137", border: "#75A137", iconBg: "rgba(255,255,255,.2)", iconFg: "#FFFFFF", fg: "#FFFFFF" },
+    /* Zmiana po migracji: tło ikony przyciemnione (było rgba(255,255,255,.2)), żeby biała ikona
+       miała kontrast co najmniej 3:1; kolor kafla bez zmian. */
+    lime: { bg: "#75A137", border: "#75A137", iconBg: "rgba(31,42,46,.18)", iconFg: "#FFFFFF", fg: "#FFFFFF" },
     sky: { bg: "#0F6F9C", border: "#0F6F9C", iconBg: "rgba(255,255,255,.18)", iconFg: "#FFFFFF", fg: "#FFFFFF" },
     light: { bg: "#BADC60", border: "#BADC60", iconBg: "rgba(255,255,255,.45)", iconFg: "#1F2A2E", fg: "#1F2A2E" },
   },
