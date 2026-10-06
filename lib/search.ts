@@ -1,7 +1,8 @@
 import { CATEGORY_ICON } from "../data/categories";
 import { GROUP_EVERYONE } from "../data/localities";
+import { STATUSES } from "../data/messageTypes";
 import { SEARCH_STATIC_ENTRIES } from "../data/search";
-import type { IconName, SearchTarget } from "../types";
+import type { IconName, SearchFilter, SearchSource, SearchTarget } from "../types";
 import { isLocal, sentMessages, statusOf } from "./messages";
 import type { AppState } from "./state";
 import { matchesAllWords, normalize } from "./text";
@@ -13,6 +14,18 @@ export interface SearchResult {
   meta: string;
   icon: IconName;
   target: SearchResultTarget;
+  /** Źródło treści (moduł) i jego etykieta w wyniku, np. „Powiadomienie”, „Usługa”. */
+  source: SearchSource;
+  kind: string;
+  category: string;
+  /** Miejscowość, jeśli wynik jej dotyczy. */
+  locality: string;
+  /** Termin i status – tylko dla komunikatów. */
+  when: string;
+  statusLabel: string;
+  statusBg: string;
+  statusFg: string;
+  snippet: string;
 }
 
 export interface SearchView {
@@ -41,6 +54,10 @@ function buildIndex(s: AppState): IndexEntry[] {
       local: isLocal(s, m) ? 0 : (m.group === GROUP_EVERYONE ? 1 : 2),
       ended: st === "ended" ? 1 : 0,
       target: { messageId: m.id },
+      source: "Powiadomienia", kind: "Powiadomienie", category: m.cat,
+      locality: m.group === GROUP_EVERYONE ? "Cała gmina" : m.group,
+      when: m.when, statusLabel: STATUSES[st].label, statusBg: STATUSES[st].bg, statusFg: STATUSES[st].fg,
+      snippet: m.text,
     };
   });
   const fixed: IndexEntry[] = SEARCH_STATIC_ENTRIES.map((e) => ({
@@ -51,18 +68,33 @@ function buildIndex(s: AppState): IndexEntry[] {
     local: e.local,
     ended: 0,
     target: e.target,
+    source: e.source, kind: e.meta.split(" · ")[0], category: e.source === "Usługi" ? "" : e.source,
+    locality: e.metaWithLocality ? s.loc : "",
+    when: "", statusLabel: "", statusBg: "", statusFg: "",
+    snippet: e.snippet,
   }));
   return messages.concat(fixed);
 }
 
+/** Filtr źródła. „Odpady” obejmuje moduł Odpady oraz komunikaty z kategorii Odpady. */
+function matchesFilter(x: SearchResult, filter: SearchFilter): boolean {
+  if (filter === "all") return true;
+  if (filter === "Odpady") return x.source === "Odpady" || x.category === "Odpady";
+  return x.source === filter;
+}
+
 /** Wyniki: najpierw aktualne, w nich najpierw moja miejscowość, potem cała gmina, potem pozostałe. */
-export function searchView(s: AppState): SearchView {
+export function searchView(s: AppState, filter: SearchFilter = "all"): SearchView {
   const q = normalize(s.sQuery).trim();
   const results = q
     ? buildIndex(s)
-        .filter((x) => matchesAllWords(x.hay, q))
+        .filter((x) => matchesAllWords(x.hay, q) && matchesFilter(x, filter))
         .sort((a, b) => (a.ended - b.ended) || (a.local - b.local))
-        .map(({ title, meta, icon, target }) => ({ title, meta, icon, target }))
+        .map((x): SearchResult => {
+          const { hay, local, ended, ...rest } = x;
+          void hay; void local; void ended;
+          return rest;
+        })
     : [];
   return {
     hasQuery: !!q,

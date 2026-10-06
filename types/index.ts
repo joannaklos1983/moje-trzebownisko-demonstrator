@@ -245,8 +245,18 @@ export interface ReportDraft {
 
 export type SearchTarget = { screen: ScreenId } | { stub: StubKey };
 
+/** Źródło treści w wyszukiwarce (moduł, z którego pochodzi wynik). */
+export type SearchSource = "Powiadomienia" | "Odpady" | "Zgłoszenia" | "Usługi";
+
+/** Filtr wyników: wszystko albo jedno źródło. Jedna wyszukiwarka, nie osobne dla modułów. */
+export type SearchFilter = "all" | "Powiadomienia" | "Odpady" | "Zgłoszenia";
+
 export interface SearchStaticEntry {
   title: string;
+  /** Moduł, do którego należy pozycja. */
+  source: SearchSource;
+  /** Krótki opis pokazywany w wyniku. */
+  snippet: string;
   meta: string;
   /** Dopisuje do opisu „ · <moja miejscowość>”. */
   metaWithLocality?: boolean;

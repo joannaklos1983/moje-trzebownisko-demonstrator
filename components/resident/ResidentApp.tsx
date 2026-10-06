@@ -8,6 +8,7 @@ import { HomeScreen } from "@/components/resident/HomeScreen";
 import { MessageDetail } from "@/components/resident/MessageDetail";
 import { NotificationsScreen } from "@/components/resident/NotificationsScreen";
 import { PendingScreen } from "@/components/resident/PendingScreen";
+import { SearchScreen } from "@/components/resident/SearchScreen";
 import { SubHeader } from "@/components/resident/SubHeader";
 import { useAppState } from "@/lib/store";
 
@@ -36,7 +37,7 @@ export function ResidentApp() {
         {screen !== "entry" && screen !== "home" && (
           <>
             <SubHeader />
-            {screen === "notifs" ? <NotificationsScreen /> : screen === "detail" ? <MessageDetail /> : <PendingScreen />}
+            {screen === "notifs" ? <NotificationsScreen /> : screen === "detail" ? <MessageDetail /> : screen === "search" ? <SearchScreen /> : <PendingScreen />}
           </>
         )}
       </div>

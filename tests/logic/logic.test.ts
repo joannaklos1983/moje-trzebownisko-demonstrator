@@ -230,6 +230,23 @@ describe("wyszukiwanie z polskimi znakami", () => {
     expect(find("woda").at(-1)).toBe("Przerwa w dostawie wody – Nowa Wieś");
   });
 
+  it("filtry zawężają te same wyniki: Powiadomienia / Odpady / Zgłoszenia", () => {
+    const s = { ...run({ type: "publish" }), sQuery: "odpady" };
+    const t = (f: Parameters<typeof searchView>[1]) => searchView(s, f).results.map((r) => r.title);
+    expect(t("all")).toEqual(["Odbiór odpadów – Jasionka", "Harmonogram odbioru odpadów", "Jak segregować odpady", "Odbiór odpadów – Łąka"]);
+    expect(t("Powiadomienia")).toEqual(["Odbiór odpadów – Jasionka", "Odbiór odpadów – Łąka"]);
+    expect(t("Odpady")).toEqual(t("all"));
+    expect(searchView(s, "Zgłoszenia")).toMatchObject({ none: true, count: 0 });
+    expect(searchView({ ...s, sQuery: "zgłoszenie" }, "Zgłoszenia").results.map((r) => r.title)).toEqual(["Dodaj zgłoszenie"]);
+  });
+
+  it("wynik niesie źródło, kategorię, miejscowość, termin, status i fragment treści", () => {
+    const [r] = searchView({ ...run({ type: "publish" }), sQuery: "woda" }).results;
+    expect(r).toMatchObject({ kind: "Powiadomienie", source: "Powiadomienia", title: WATER, category: "Woda i awarie", locality: "Jasionka", when: "Dziś, 8:00–14:00", statusLabel: "● TRWA", snippet: "W godz. 8:00–14:00 nastąpi przerwa w dostawie wody.", target: { messageId: "admin-1" } });
+    const [h] = searchView({ ...run({ type: "selectLocality", value: "Łąka" }), sQuery: "harmonogram" }).results;
+    expect(h).toMatchObject({ kind: "Usługa", source: "Odpady", locality: "Łąka", statusLabel: "", target: { screen: "waste" } });
+  });
+
   it("brak wyników dla nieznanego hasła, brak listy bez zapytania", () => {
     expect(searchView({ ...run(), sQuery: "xyzxyz" })).toMatchObject({ none: true, count: 0 });
     expect(searchView(run())).toMatchObject({ hasQuery: false, count: 0, none: false });
