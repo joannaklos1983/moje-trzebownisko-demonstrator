@@ -145,6 +145,22 @@ export function favoritesSummary(s: AppState): string {
   return s.favs.length ? s.favs.join(", ") : "Brak – wybierz w Ulubionych";
 }
 
+/** Ekran Ulubione (dodane po migracji): najnowsze aktualne treści z obserwowanych kategorii
+    w moim zakresie miejscowości. Te same rekordy co w Powiadomieniach. */
+export function favoriteFeed(s: AppState): Message[] {
+  return sentMessages(s)
+    .filter((m) => s.favs.indexOf(m.cat) >= 0 && isForMe(s, m) && statusOf(s, m) !== "ended")
+    .sort((a, b) => ts(b.sentAt) - ts(a.sentAt))
+    .slice(0, 5);
+}
+
+/** Oficjalny link zewnętrzny – tylko gdy rekord ma POTWIERDZONY, prawdziwy adres (pole officialUrl).
+    Adresy z polami do uzupełnienia w nawiasach kwadratowych nie są linkami. Nie zgadujemy adresów. */
+export function confirmedExternalUrl(m: Message): string {
+  const url = (m.officialUrl || "").trim();
+  return /^https:\/\/[^\s[\]]+$/.test(url) ? url : "";
+}
+
 /* ---------- szczegół i karta komunikatu ---------- */
 
 /** Komunikat pokazywany na ekranie szczegółu (gdy brak – pierwszy przykładowy, jak w demonstratorze). */

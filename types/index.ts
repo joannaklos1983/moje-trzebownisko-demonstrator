@@ -89,6 +89,10 @@ export interface Message {
   action: MessageAction;
   btn: string;
   link?: string;
+  /** Potwierdzony adres oficjalnej strony (Gmina, OSiR, GCK, Centrum Oświaty). Brak = nie pokazujemy linku. */
+  officialUrl?: string;
+  /** Podpis przycisku linku, np. „Sprawdź na stronie OSiR”. */
+  officialUrlLabel?: string;
   fromAdmin?: boolean;
 }
 

@@ -18,7 +18,7 @@ export function CategoryList() {
   const canExpand = MAIN_CATEGORIES.length > CATEGORIES_COLLAPSED_COUNT;
 
   return (
-    <section style={{ padding: "30px 20px 0" }}>
+    <section id="kategorie" style={{ padding: "30px 20px 0" }}>
       <h2 className="h2">Kategorie</h2>
       <p style={{ margin: "6px 0 0", fontSize: 14.5, color: "#5A6670" }}>Przeglądaj informacje według tematu</p>
 
