@@ -20,6 +20,18 @@ export const MESSAGE_TYPES: Record<MessageTypeId, MessageTypeDef> = {
   },
 };
 
+/* Wygląd karty „Ważne teraz” (zmiana po migracji): zieleń Gminy oznacza ekspozycję na pulpicie,
+   niezależnie od typu Informacja / Ostrzeżenie – typ jest podany tekstem i ikoną na etykiecie.
+   Wyjątek: Alert RCB zachowuje czerwone kolory typu. */
+export const IMPORTANT_HIGHLIGHT = {
+  border: "#2F824F",
+  bg: "#EEF7F0",
+  pillBg: "#DDEFE3",
+  pillFg: "#1F6B3D",
+  circleBg: "#DDEFE3",
+  circleFg: "#2F824F",
+} as const;
+
 /* Kolejność typów w panelu administratora. */
 export const MESSAGE_TYPE_ORDER: MessageTypeId[] = ["Informacja", "Ostrzeżenie", "Alert"];
 
