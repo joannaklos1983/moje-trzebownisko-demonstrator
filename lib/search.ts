@@ -30,7 +30,10 @@ export interface SearchResult {
 
 export interface SearchView {
   hasQuery: boolean;
+  /** Opis kolejności wyników – tekst z demonstratora referencyjnego (zostaje dla zgodności). */
   context: string;
+  /** Krótki opis zakresu pokazywany mieszkańcowi na ekranie Szukaj. */
+  contextLabel: string;
   results: SearchResult[];
   count: number;
   none: boolean;
@@ -99,6 +102,7 @@ export function searchView(s: AppState, filter: SearchFilter = "all"): SearchVie
   return {
     hasQuery: !!q,
     context: s.locPriority ? "Najpierw wyniki dla: " + s.loc + ", potem cała gmina" : "Wyniki dla całej gminy",
+    contextLabel: s.locPriority ? "Wyniki dla: " + s.loc + " i całej gminy" : "Wyniki dla całej gminy",
     results,
     count: results.length,
     none: !!q && results.length === 0,
