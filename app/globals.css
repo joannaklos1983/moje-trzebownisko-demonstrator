@@ -1,0 +1,102 @@
+/* Tokeny UGT Design System v2.0 */
+:root {
+  /* 3.1 Oficjalna paleta UGT */
+  --ugt-green: #2F824F;
+  --ugt-green-secondary: #75A137;
+  --ugt-lime: #BADC60;
+  --ugt-blue: #137FB0;
+
+  /* 3.2 Kolory funkcjonalne */
+  --paper: #FFFFFF;
+  --surface: #F5F8F4;
+  --ink: #1F2A2E;
+  --muted: #5A6670;
+  --border: #DFE6E2;
+
+  /* Pochodne używane w demonstratorze referencyjnym */
+  --ugt-green-hover: #23673D;
+  --demo-backdrop: #E9EDEA;
+
+  /* 4.1 Font marki; Arial jako fallback (4.5) */
+  --font-brand: var(--font-montserrat), Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--demo-backdrop);
+  font-family: var(--font-brand);
+  color: var(--ink);
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 3px solid var(--ugt-blue);
+  outline-offset: 2px;
+}
+
+a {
+  color: var(--ugt-green);
+}
+
+a:hover {
+  color: var(--ugt-green-hover);
+}
+
+/* ---------- Klasy komponentów – przeniesione 1:1 z demonstratora referencyjnego ---------- */
+
+.ic{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none;display:block}
+.plain{background:none;border:0;padding:0;margin:0;text-align:left;width:100%;display:block}
+.btn{border:0;background:#2F824F;color:#fff;font-weight:700;font-size:16px;border-radius:12px;padding:14px 24px;min-height:48px;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.btn:hover{background:#286F43}
+.btn2{border:1.5px solid #2F824F;background:#fff;color:#23673D;font-weight:700;font-size:16px;border-radius:12px;padding:14px 24px;min-height:48px;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.btn2:hover{background:#F1F8F3}
+.lnk{background:none;border:0;padding:0;color:#2F824F;font-weight:700;font-size:15px;display:inline-flex;align-items:center;gap:6px;min-height:44px}
+.lnk:hover{color:#23673D}
+.pill{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:700;border-radius:999px;padding:4px 10px;line-height:1.2;white-space:nowrap}
+.st{font-size:11px;font-weight:700;letter-spacing:.04em;border-radius:6px;padding:4px 8px;display:inline-flex;align-items:center;gap:5px;white-space:nowrap;line-height:1.2}
+.h2{font-size:22px;font-weight:700;margin:0;display:flex;align-items:center;gap:10px}
+.h2::before{content:'';width:4px;height:22px;border-radius:2px;background:#2F824F;flex:none}
+.tag{font-size:11px;font-weight:700;letter-spacing:.05em;border:1px dashed #A86A00;color:#7A4A00;background:#FFF6E0;border-radius:999px;padding:3px 8px;white-space:nowrap;display:inline-flex;align-items:center}
+.tagn{font-size:11px;font-weight:700;letter-spacing:.05em;color:#fff;background:#8A5300;border-radius:999px;padding:3px 8px;white-space:nowrap;display:inline-flex;align-items:center}
+.row{width:100%;text-align:left;background:none;border:0;display:flex;align-items:center;gap:12px;min-height:56px}
+.row:hover{background:#F7FAF8}
+.sel{appearance:none;-webkit-appearance:none;border:1.5px solid #CFD8D3;border-radius:12px;background:#fff;font-size:15px;padding:11px 40px 11px 14px;width:100%;min-height:48px;font-weight:500}
+.inp{border:1.5px solid #CFD8D3;border-radius:12px;background:#fff;font-size:15px;padding:11px 14px;width:100%;min-height:48px}
+.lbl{font-size:14px;font-weight:600;display:block;margin-bottom:6px}
+.sw{width:52px;height:30px;border-radius:999px;border:0;background:#AEB9B3;position:relative;flex:none;padding:0}
+.sw[aria-checked="true"]{background:#2F824F}
+.sw::after{content:'';position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;transition:left .15s}
+.sw[aria-checked="true"]::after{left:25px}
+.chip{display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:9px 14px;font-size:14.5px;font-weight:600;min-height:44px}
+.scr::-webkit-scrollbar{width:6px}.scr::-webkit-scrollbar-thumb{background:#C9D2CD;border-radius:3px}
+.navb{flex:1;background:none;border:0;display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 0 10px;font-size:13px;font-weight:500;color:#3C474C;min-height:64px}
+.navb[aria-current="page"]{color:#23673D;font-weight:700}
+.navi{width:64px;height:32px;border-radius:16px;display:flex;align-items:center;justify-content:center}
+.navb[aria-current="page"] .navi{background:#DDEFE3}
+.seg{flex:1;border:0;background:transparent;border-radius:10px;font-size:14.5px;font-weight:600;min-height:44px;color:#3C474C}
+.seg[aria-pressed="true"]{background:#fff;color:#1F2A2E;box-shadow:0 1px 3px rgba(31,42,46,.18);font-weight:700}
+.a-inp{border:1px solid #CFD8D3;border-radius:10px;background:#fff;font-size:13.5px;padding:9px 12px;width:100%;min-height:40px}
+.a-sel{appearance:none;-webkit-appearance:none;border:1px solid #CFD8D3;border-radius:10px;background:#fff;font-size:13.5px;padding:9px 34px 9px 12px;width:100%;min-height:40px}
+.a-lbl{font-size:12.5px;font-weight:600;display:block;margin-bottom:5px;color:#1F2A2E}
+.a-hint{font-size:11.5px;color:#5A6670;margin:5px 0 0;line-height:1.45}
+.a-sec{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:700;margin:0}
+.a-num{width:24px;height:24px;border-radius:50%;background:#2F824F;color:#fff;font-size:12px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;flex:none}
+.a-new{border:1.5px dashed #D9A441;background:#FFFBF0;border-radius:12px;padding:14px}
+.a-side{display:flex;align-items:center;gap:10px;font-size:13px;padding:8px 10px;border-radius:8px;color:#3C474C}
+.tbtn{border:1px solid #CFD8D3;background:#fff;border-radius:8px;font-size:13px;font-weight:600;padding:7px 12px;min-height:36px}
+.tbtn[aria-pressed="true"]{background:#2F824F;border-color:#2F824F;color:#fff}
