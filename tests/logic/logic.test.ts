@@ -6,7 +6,7 @@ import {
   isSent, statusOf, tier,
 } from "../../lib/messages";
 import { filterNotifications, notificationsView } from "../../lib/notifications";
-import { searchView } from "../../lib/search";
+import { searchSuggestions, searchView } from "../../lib/search";
 import { createInitialState } from "../../lib/state";
 import { normalize, stem } from "../../lib/text";
 import { wasteView } from "../../lib/waste";
@@ -245,6 +245,16 @@ describe("wyszukiwanie z polskimi znakami", () => {
     expect(r).toMatchObject({ kind: "Powiadomienie", source: "Powiadomienia", title: WATER, category: "Woda i awarie", locality: "Jasionka", when: "Dziś, 8:00–14:00", statusLabel: "● TRWA", snippet: "W godz. 8:00–14:00 nastąpi przerwa w dostawie wody.", target: { messageId: "admin-1" } });
     const [h] = searchView({ ...run({ type: "selectLocality", value: "Łąka" }), sQuery: "harmonogram" }).results;
     expect(h).toMatchObject({ kind: "Usługa", source: "Odpady", locality: "Łąka", statusLabel: "", target: { screen: "waste" } });
+  });
+
+  it("podpowiedzi przy krótkim haśle: popularne hasło, tytuły i kategorie od początku słowa", () => {
+    const sg = searchSuggestions({ ...run({ type: "publish" }), sQuery: "wo" });
+    expect(sg.terms).toEqual(["woda"]);
+    expect(sg.items.map((r) => r.title)).toEqual([WATER, "Przerwa w dostawie wody – Nowa Wieś"]);
+    expect(sg.categories).toEqual(["Woda i awarie"]);
+    expect(searchSuggestions({ ...run(), sQuery: "ŁĄ" }).items.map((r) => r.title)).toContain("Ruch wahadłowy – Łąka");
+    expect(searchSuggestions(run())).toMatchObject({ any: false });
+    expect(searchSuggestions({ ...run(), sQuery: "qx" }).any).toBe(false);
   });
 
   it("brak wyników dla nieznanego hasła, brak listy bez zapytania", () => {

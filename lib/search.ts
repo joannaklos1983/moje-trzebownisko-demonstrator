@@ -1,8 +1,8 @@
-import { CATEGORY_ICON } from "../data/categories";
+import { CATEGORIES, CATEGORY_ICON } from "../data/categories";
 import { GROUP_EVERYONE } from "../data/localities";
 import { STATUSES } from "../data/messageTypes";
-import { SEARCH_STATIC_ENTRIES } from "../data/search";
-import type { IconName, SearchFilter, SearchSource, SearchTarget } from "../types";
+import { SEARCH_STATIC_ENTRIES, SEARCH_SUGGESTIONS } from "../data/search";
+import type { Category, IconName, SearchFilter, SearchSource, SearchTarget } from "../types";
 import { isLocal, sentMessages, statusOf } from "./messages";
 import type { AppState } from "./state";
 import { matchesAllWords, normalize } from "./text";
@@ -107,4 +107,41 @@ export function searchView(s: AppState, filter: SearchFilter = "all"): SearchVie
     count: results.length,
     none: !!q && results.length === 0,
   };
+}
+
+/* ---------- podpowiedzi podczas pisania (dodane po migracji) ---------- */
+
+/** Od tylu znaków pokazujemy od razu pełne wyniki; przy krótszym haśle – podpowiedzi. */
+export const SEARCH_RESULTS_MIN_LENGTH = 3;
+
+export interface SearchSuggestions {
+  /** Popularne hasła zaczynające się od wpisanego tekstu. */
+  terms: string[];
+  /** Treści, których tytuł ma słowo zaczynające się od wpisanego tekstu (najwyżej 3). */
+  items: SearchResult[];
+  /** Kategorie, których nazwa ma słowo zaczynające się od wpisanego tekstu (najwyżej 2). */
+  categories: Category[];
+  any: boolean;
+}
+
+function wordStartsWith(text: string, q: string): boolean {
+  return normalize(text).split(/[^a-z0-9]+/).some((w) => w.startsWith(q));
+}
+
+/** Podpowiedzi dla krótkiego hasła: dopasowanie od początku słowa, ta sama kolejność co w wynikach. */
+export function searchSuggestions(s: AppState): SearchSuggestions {
+  const q = normalize(s.sQuery).trim();
+  if (!q) return { terms: [], items: [], categories: [], any: false };
+  const terms = SEARCH_SUGGESTIONS.filter((t) => normalize(t).startsWith(q) && normalize(t) !== q);
+  const items = buildIndex(s)
+    .filter((x) => wordStartsWith(x.title, q))
+    .sort((a, b) => (a.ended - b.ended) || (a.local - b.local))
+    .slice(0, 3)
+    .map((x): SearchResult => {
+      const { hay, local, ended, ...rest } = x;
+      void hay; void local; void ended;
+      return rest;
+    });
+  const categories = CATEGORIES.filter((c) => wordStartsWith(c, q)).slice(0, 2);
+  return { terms, items, categories, any: terms.length + items.length + categories.length > 0 };
 }

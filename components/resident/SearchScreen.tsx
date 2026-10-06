@@ -2,14 +2,27 @@
 
 import { useState } from "react";
 import { Icon } from "@/components/ui/Icon";
-import { visuallyHidden } from "@/components/ui/VisuallyHidden";
+import { CATEGORY_ICON } from "@/data/categories";
 import { SEARCH_FILTERS, SEARCH_SUGGESTIONS } from "@/data/search";
-import { searchView } from "@/lib/search";
+import { SEARCH_RESULTS_MIN_LENGTH, searchSuggestions, searchView } from "@/lib/search";
 import type { SearchResult } from "@/lib/search";
 import { useAppActions, useAppState } from "@/lib/store";
-import type { SearchFilter } from "@/types";
+import type { IconName, SearchFilter } from "@/types";
+
+function SuggestionRow({ icon, label, hint, onClick }: { icon: IconName; label: string; hint?: string; onClick: () => void }) {
+  return (
+    <button className="row" data-suggestion onClick={onClick} style={{ borderTop: "1px solid #E6ECE8", padding: "8px 14px", minHeight: 52 }}>
+      <Icon name={icon} size={20} style={{ color: "#2F824F" }} />
+      <span style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: 2 }}>
+        <span style={{ fontSize: 15.5, fontWeight: 600, lineHeight: 1.3, color: "#1F2A2E" }}>{label}</span>
+        {hint && <span style={{ fontSize: 13, color: "#5A6670" }}>{hint}</span>}
+      </span>
+    </button>
+  );
+}
 
 /* Szukaj: jedna wyszukiwarka dla treści mieszkańca (komunikaty, usługi, szybki dostęp).
+   Przed wpisaniem – popularne wyszukiwania; przy krótkim haśle – podpowiedzi; dalej – wyniki.
    Filtry tylko zawężają te same wyniki – nie ma osobnych wyszukiwarek dla modułów.
    DO SPRAWDZENIA (oznaczenie projektowe, celowo niewidoczne dla mieszkańca): globalna wyszukiwarka
    i zakres indeksowanych modułów nie są potwierdzone w obecnym systemie. */
@@ -17,7 +30,14 @@ export function SearchScreen() {
   const state = useAppState();
   const { dispatch } = useAppActions();
   const [filter, setFilter] = useState<SearchFilter>("all");
+  /* hasło, dla którego mieszkaniec wybrał „Pokaż wszystkie wyniki” mimo krótkiego tekstu */
+  const [showAllFor, setShowAllFor] = useState<string | null>(null);
   const sr = searchView(state, filter);
+  const query = state.sQuery.trim();
+  const suggesting = sr.hasQuery && query.length < SEARCH_RESULTS_MIN_LENGTH && showAllFor !== state.sQuery;
+  const sg = suggesting ? searchSuggestions(state) : null;
+  /* każda zmiana hasła wraca do podpowiedzi (dla krótkiego tekstu) */
+  const setQuery = (q: string) => { setShowAllFor(null); dispatch({ type: "patch", patch: { sQuery: q } }); };
 
   const open = (r: SearchResult) => {
     if ("messageId" in r.target) dispatch({ type: "openMessage", id: r.target.messageId });
@@ -27,10 +47,13 @@ export function SearchScreen() {
 
   return (
     <div style={{ padding: "16px 20px 32px", display: "flex", flexDirection: "column", gap: 14 }}>
-      <div style={{ position: "relative" }}>
-        <label htmlFor="sq" style={visuallyHidden}>Szukaj informacji, usług i miejsc</label>
-        <Icon name="search" size={22} style={{ position: "absolute", left: 16, top: 17 }} />
-        <input id="sq" className="inp" style={{ paddingLeft: 50, minHeight: 56, fontSize: 16, borderRadius: 16, background: "#F5F8F4" }} placeholder="Szukaj informacji, usług i miejsc" value={state.sQuery} onChange={(e) => dispatch({ type: "patch", patch: { sQuery: e.target.value } })} />
+      <div>
+        {/* widoczna etykieta pola – sam tekst zastępczy nie jest etykietą */}
+        <label className="lbl" htmlFor="sq">Szukaj informacji, usług i miejsc</label>
+        <div style={{ position: "relative" }}>
+          <Icon name="search" size={22} style={{ position: "absolute", left: 16, top: 17 }} />
+          <input id="sq" className="inp" autoComplete="off" style={{ paddingLeft: 50, minHeight: 56, fontSize: 16, borderRadius: 16, background: "#F5F8F4" }} placeholder="Wpisz hasło, np. woda" value={state.sQuery} onChange={(e) => setQuery(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") setShowAllFor(state.sQuery); }} />
+        </div>
       </div>
 
       <div data-context style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 14, color: "#3C474C" }}>
@@ -52,13 +75,26 @@ export function SearchScreen() {
           <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 10 }}>Popularne wyszukiwania</div>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
             {SEARCH_SUGGESTIONS.map((x) => (
-              <button key={x} className="chip" onClick={() => dispatch({ type: "patch", patch: { sQuery: x } })} style={{ border: "1.5px solid #CFD8D3", background: "#FFFFFF", minHeight: 44, padding: "7px 14px" }}>{x}</button>
+              <button key={x} className="chip" onClick={() => setQuery(x)} style={{ border: "1.5px solid #CFD8D3", background: "#FFFFFF", minHeight: 44, padding: "7px 14px" }}>{x}</button>
             ))}
           </div>
         </div>
       )}
 
-      {sr.hasQuery && !sr.none && (
+      {sg && (
+        <div data-suggestions style={{ border: "1px solid #DFE6E2", borderRadius: 14, overflow: "hidden", background: "#FFFFFF" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, padding: "2px 14px" }}>
+            <span style={{ fontSize: 14, fontWeight: 700 }}>Podpowiedzi</span>
+            <button className="lnk" style={{ fontSize: 14 }} onClick={() => setShowAllFor(state.sQuery)}>Pokaż wszystkie wyniki</button>
+          </div>
+          {sg.terms.map((t) => <SuggestionRow key={"t" + t} icon="search" label={t} onClick={() => setQuery(t)} />)}
+          {sg.items.map((r, i) => <SuggestionRow key={"i" + i} icon={r.icon} label={r.title} hint={[r.kind, r.locality].filter(Boolean).join(" · ")} onClick={() => open(r)} />)}
+          {sg.categories.map((c) => <SuggestionRow key={"c" + c} icon={CATEGORY_ICON[c]} label={c} hint="Kategoria" onClick={() => setQuery(c)} />)}
+          {!sg.any && <p style={{ margin: 0, padding: "12px 14px", borderTop: "1px solid #E6ECE8", fontSize: 14.5, color: "#3C474C" }}>Brak podpowiedzi. Wpisz dłuższe hasło.</p>}
+        </div>
+      )}
+
+      {sr.hasQuery && !suggesting && !sr.none && (
         <>
           <div style={{ fontSize: 13.5, color: "#5A6670" }}>Wyniki: {sr.count}</div>
           <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
@@ -85,7 +121,7 @@ export function SearchScreen() {
         </>
       )}
 
-      {sr.none && (
+      {sr.none && !suggesting && (
         <div role="status" style={{ border: "1.5px dashed #CFD8D3", borderRadius: 16, padding: 20, textAlign: "center" }}>
           <p style={{ margin: 0, fontSize: 15.5, fontWeight: 600 }}>Nie znaleziono wyników. Spróbuj innego hasła.</p>
         </div>
