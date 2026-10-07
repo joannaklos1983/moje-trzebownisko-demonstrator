@@ -34,7 +34,7 @@ export function FavoritesScreen() {
       {watched.length === 0 ? (
         <div data-empty style={{ border: "1.5px dashed #CFD8D3", borderRadius: 16, padding: 20, display: "flex", flexDirection: "column", gap: 10, alignItems: "flex-start" }}>
           <p style={{ margin: 0, fontSize: 16, fontWeight: 700 }}>Nie obserwujesz jeszcze żadnej kategorii.</p>
-          <p style={{ margin: 0, fontSize: 14.5, color: "#3C474C", lineHeight: 1.5 }}>Wróć na Start i wybierz ☆ Dodaj do ulubionych przy interesującym Cię temacie.</p>
+          <p style={{ margin: 0, fontSize: 14.5, color: "#3C474C", lineHeight: 1.5 }}>Wróć na Start i wybierz „Obserwuj” przy interesującym Cię temacie.</p>
           <button className="btn" style={{ width: "100%", marginTop: 4 }} onClick={goToCategories}>Przejdź do kategorii</button>
         </div>
       ) : (
