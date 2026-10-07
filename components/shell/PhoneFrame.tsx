@@ -1,7 +1,8 @@
 import type { ReactNode } from "react";
 
-/* Ramka telefonu. Szerokość ekranu 390 px (domyślnie) lub 360 px (kontrola wąskiego ekranu). */
-export function PhoneFrame({ screenWidth = 390, children }: { screenWidth?: number; children: ReactNode }) {
+/* Ramka telefonu. Szerokość ekranu 390 px (domyślnie) lub 360 px (kontrola wąskiego ekranu).
+   „footer” – element pod telefonem (przycisk panelu administratora). */
+export function PhoneFrame({ screenWidth = 390, footer, children }: { screenWidth?: number; footer?: ReactNode; children: ReactNode }) {
   const frameWidth = screenWidth + 24;
   return (
     <div style={{ width: frameWidth, flex: "none", display: "flex", flexDirection: "column", gap: 10, alignItems: "center" }}>
@@ -10,7 +11,7 @@ export function PhoneFrame({ screenWidth = 390, children }: { screenWidth?: numb
           {children}
         </div>
       </div>
-      <div style={{ fontSize: 12, color: "#5A6670" }}>Aplikacja mieszkańca · szerokość ekranu {screenWidth} px</div>
+      {footer}
     </div>
   );
 }

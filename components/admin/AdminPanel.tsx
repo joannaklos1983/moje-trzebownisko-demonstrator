@@ -12,7 +12,7 @@ import { useAppState } from "@/lib/store";
 export function AdminPanel() {
   const { adminFlash } = useAppState();
   return (
-    <div style={{ flex: 1, minWidth: 0, height: 868, background: "#FFFFFF", borderRadius: 18, border: `2px solid ${adminFlash ? "#137FB0" : "#DFE6E2"}`, display: "flex", overflow: "hidden", boxShadow: "0 8px 24px rgba(31,42,46,.08)" }}>
+    <div id="panel-administratora" style={{ flex: 1, minWidth: 0, height: 868, background: "#FFFFFF", borderRadius: 18, border: `2px solid ${adminFlash ? "#137FB0" : "#DFE6E2"}`, display: "flex", overflow: "hidden", boxShadow: "0 8px 24px rgba(31,42,46,.08)" }}>
       <aside style={{ width: 196, flex: "none", borderRight: "1px solid #E6ECE8", padding: "16px 12px", display: "flex", flexDirection: "column", gap: 2, background: "#FBFCFB" }}>
         <div style={{ alignSelf: "flex-start", margin: "0 0 16px 4px" }}><Logo height={40} /></div>
         {ADMIN_SIDE_MENU.map((x, i) => (
