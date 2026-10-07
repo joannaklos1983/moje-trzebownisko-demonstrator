@@ -10,14 +10,16 @@ import type { AllLocalitiesValue, Locality } from "@/types";
 
 /* Nagłówek Startu: logo, wybór miejscowości (jeden kontekst lokalizacji dla całej aplikacji), dzwonek.
    Widoczna jest nazwa wybranej miejscowości; prawdziwe pole wyboru leży niewidoczne na całej pastylce,
-   dzięki czemu pastylka ma dokładnie szerokość nazwy, a obsługa (dotyk, klawiatura) jest natywna. */
+   dzięki czemu pastylka ma dokładnie szerokość nazwy, a obsługa (dotyk, klawiatura) jest natywna.
+   Gdy brakuje miejsca, najpierw zmniejsza się logo (do 96 px); nazwa skraca się dopiero potem
+   (pastylka nie kurczy się sama – ma tylko górny limit szerokości: wiersz minus logo, dzwonek i odstępy). */
 export function StartHeader() {
   const state = useAppState();
   const { dispatch } = useAppActions();
   return (
     <div style={{ position: "sticky", top: 0, zIndex: 3, background: "#FFFFFF", borderBottom: "1px solid #E6ECE8", padding: "10px 10px 10px 16px", display: "flex", alignItems: "center", gap: 8 }}>
-      <div style={{ flex: "0 40 138px", minWidth: 96 }}><Logo height={40} fluid /></div>
-      <div className="loc-wrap" style={{ marginLeft: "auto", position: "relative", display: "flex", alignItems: "center", gap: 6, border: "1.5px solid #DFE6E2", borderRadius: 999, padding: "0 10px 0 12px", minHeight: 44, flex: "0 1 auto", minWidth: 0, background: "#FFFFFF" }}>
+      <div style={{ flex: "0 1 138px", minWidth: 96 }}><Logo height={40} fluid /></div>
+      <div className="loc-wrap" style={{ marginLeft: "auto", position: "relative", display: "flex", alignItems: "center", gap: 6, border: "1.5px solid #DFE6E2", borderRadius: 999, padding: "0 10px 0 12px", minHeight: 44, flex: "0 0 auto", maxWidth: "calc(100% - 156px)", minWidth: 0, background: "#FFFFFF" }}>
         <Icon name="pin" size={18} style={{ color: "#2F824F" }} />
         <span data-loc-label aria-hidden="true" style={{ fontSize: 16, fontWeight: 600, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", minWidth: 0 }}>{scopeLabel(state)}</span>
         <Icon name="chevD" size={18} style={{ color: "#3C474C" }} />
