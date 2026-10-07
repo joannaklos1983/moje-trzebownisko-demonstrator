@@ -34,7 +34,6 @@ export function CalendarPreview() {
     <section aria-labelledby="kalendarz-gminny" style={{ padding: "26px 16px 0" }}>
       <div style={{ display: "flex", flexDirection: "column", gap: 6, alignItems: "flex-start" }}>
         <h2 id="kalendarz-gminny" className="h2" style={{ fontSize: 20 }}>Kalendarz gminny</h2>
-        <span className="tag">DANE DEMONSTRACYJNE</span>
       </div>
       <div role="group" aria-label="Zakres kalendarza" style={{ marginTop: 12, display: "flex", gap: 4, background: "#EEF2EF", borderRadius: 12, padding: 4 }}>
         {RANGES.map((r) => <button key={r.value} className="seg" aria-pressed={range === r.value} onClick={() => setRange(r.value)}>{r.label}</button>)}

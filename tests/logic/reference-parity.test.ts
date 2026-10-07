@@ -16,7 +16,7 @@ import {
 import type { MessageView } from "../../lib/messages";
 import { notificationsView } from "../../lib/notifications";
 import { searchView } from "../../lib/search";
-import { createInitialState, reducer } from "../../lib/state";
+import { ADDED_STATE_KEYS, createInitialState, reducer } from "../../lib/state";
 import type { Action, AppState } from "../../lib/state";
 import { wasteView } from "../../lib/waste";
 import type { Category, MessageTypeId } from "../../types";
@@ -74,6 +74,13 @@ function refApply(ref: any, a: Action): void {
     case "hideAdminHint": ref.setState({ adminFlash: false }); break;
     case "reset": rv.shell.reset(); break;
   }
+}
+
+/* Stan bez pól dodanych po migracji (moduł Zgłoszenia) – demonstrator referencyjny ich nie ma. */
+function referenceShape(s: AppState): Record<string, unknown> {
+  const out: Record<string, unknown> = { ...s };
+  ADDED_STATE_KEYS.forEach((k) => { delete out[k]; });
+  return out;
 }
 
 /* ---- porównanie wyliczonych widoków ---- */
@@ -141,11 +148,11 @@ function compareViews(ref: any, s: AppState): void {
 function runBoth(actions: Action[], check: (ref: any, s: AppState, i: number) => void = () => {}): { ref: any; s: AppState } {
   const ref = loadReference();
   let s = createInitialState();
-  expect(s).toEqual(plain(ref.state));
+  expect(referenceShape(s)).toEqual(plain(ref.state));
   actions.forEach((a, i) => {
     refApply(ref, a);
     s = reducer(s, a);
-    expect(s, "stan po akcji #" + i + " " + a.type).toEqual(plain(ref.state));
+    expect(referenceShape(s), "stan po akcji #" + i + " " + a.type).toEqual(plain(ref.state));
     check(ref, s, i);
   });
   return { ref, s };

@@ -132,6 +132,8 @@ export type ScreenId =
   | "calendar"
   | "fav"
   | "profile"
+  | "reportDetail"
+  | "reportForm"
   | "stub";
 
 export type StubKey =
@@ -302,4 +304,38 @@ export interface AdminChannelDef {
 export interface DemoTime {
   value: string;
   label: string;
+}
+
+/* ---------- moduł Zgłoszenia (start-redesign) ---------- */
+
+export type ReportStatus = "new" | "inProgress" | "done";
+
+/** Jeden rekord zgłoszenia zasila listę, mapę poglądową i szczegół. */
+export interface Report {
+  id: string;
+  title: string;
+  /** Rodzaj zgłoszenia z listy REPORT_TYPES. */
+  type: string;
+  locality: Locality;
+  /** Opis miejsca. */
+  place: string;
+  status: ReportStatus;
+  /** Data zgłoszenia „RRRR-MM-DD”. */
+  date: string;
+  desc: string;
+  /** Położenie na mapie poglądowej w procentach szerokości / wysokości – nie współrzędne geograficzne. */
+  mapX: number;
+  mapY: number;
+  /** Zgłoszenie dodane przez mieszkańca w tej sesji demo. */
+  mine?: boolean;
+  /** Mieszkaniec dołączył zdjęcie (symulacja – plik nie jest przesyłany). */
+  photo?: boolean;
+}
+
+export interface ReportFormState {
+  type: string;
+  locality: Locality | "";
+  place: string;
+  desc: string;
+  photo: boolean;
 }

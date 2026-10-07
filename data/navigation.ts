@@ -15,6 +15,8 @@ export const SCREEN_TITLES: Partial<Record<ScreenId, string>> = {
   notifs: "Powiadomienia",
   detail: "Komunikat",
   reports: "Zgłoszenia",
+  reportDetail: "Zgłoszenie",
+  reportForm: "Zgłoś problem",
   waste: "Odpady",
   search: "Szukaj",
   calendar: "Kalendarz",

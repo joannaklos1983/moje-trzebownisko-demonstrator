@@ -35,7 +35,6 @@ export function PartnersRow() {
       <div style={{ display: "flex", alignItems: "flex-start", gap: 8, padding: "0 16px" }}>
         <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: 6, alignItems: "flex-start" }}>
           <h2 id="partnerzy" className="h2" style={{ fontSize: 17 }}>Partnerzy Karty Mieszkańca</h2>
-          <span className="tag">DANE DEMO</span>
         </div>
         <button aria-label="Poprzedni partnerzy" onClick={() => scroll(-1)} style={ARROW}><Icon name="chevR" size={18} style={{ transform: "rotate(180deg)" }} /></button>
         <button aria-label="Następni partnerzy" onClick={() => scroll(1)} style={ARROW}><Icon name="chevR" size={18} /></button>

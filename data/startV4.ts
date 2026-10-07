@@ -81,11 +81,13 @@ export interface CardPartner {
   name: string;
   image: string;
   imageAlt: string;
+  /** Przykładowa korzyść – z grafiki partnera. */
+  benefit: string;
   locality?: string;
 }
 
 export const CARD_PARTNERS: CardPartner[] = [
-  { id: "basen", name: "Basen", image: "/assets/start-v4/partner-basen.png", imageAlt: "Basen – 15% zniżki z Kartą Mieszkańca", locality: "Trzebownisko" },
-  { id: "salon", name: "Salon kosmetyczny Agnieszka", image: "/assets/start-v4/partner-salon.png", imageAlt: "Salon kosmetyczny Agnieszka – 10% zniżki z Kartą Mieszkańca" },
-  { id: "restauracja", name: "Restauracja Szamka", image: "/assets/start-v4/partner-restauracja.png", imageAlt: "Restauracja Szamka – 15% zniżki z Kartą Mieszkańca" },
+  { id: "basen", name: "Basen", image: "/assets/start-v4/partner-basen.png", imageAlt: "Basen – 15% zniżki z Kartą Mieszkańca", benefit: "15% zniżki z Kartą Mieszkańca", locality: "Trzebownisko" },
+  { id: "salon", name: "Salon kosmetyczny Agnieszka", image: "/assets/start-v4/partner-salon.png", imageAlt: "Salon kosmetyczny Agnieszka – 10% zniżki z Kartą Mieszkańca", benefit: "10% zniżki z Kartą Mieszkańca" },
+  { id: "restauracja", name: "Restauracja Szamka", image: "/assets/start-v4/partner-restauracja.png", imageAlt: "Restauracja Szamka – 15% zniżki z Kartą Mieszkańca", benefit: "15% zniżki z Kartą Mieszkańca" },
 ];

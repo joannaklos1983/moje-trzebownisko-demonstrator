@@ -1,11 +1,11 @@
 import { CAMPAIGN_FORM_DEFAULTS } from "../data/campaignDefaults";
 import { INITIAL_A11Y, INITIAL_CHANNELS, INITIAL_FAV_NOTIFY, INITIAL_FAVORITE_CATEGORIES, INITIAL_LOCALITY, INITIAL_NOW, INITIAL_UNREAD_IDS } from "../data/demo";
 import { ALL_LOCALITIES_VALUE } from "../data/localities";
-import { REPORT_DRAFT_DEFAULTS } from "../data/reports";
+import { REPORT_DRAFT_DEFAULTS, REPORT_FORM_DEFAULTS } from "../data/reports";
 import { SEED_MESSAGES } from "../data/notifications";
 import type {
   A11yKey, AllLocalitiesValue, CampaignForm, Category, ChannelKey, Locality, Message, MessageTypeId,
-  ReportDraft, ScreenId, ServiceTarget, StubKey, WasteFractionKey,
+  Report, ReportDraft, ReportFormState, ScreenId, ServiceTarget, StubKey, WasteFractionKey,
 } from "../types";
 import { ADMIN_HINT_TOAST, formToMessage, publishToast } from "./campaign";
 
@@ -56,7 +56,18 @@ export interface AppState {
   form: CampaignForm;
   toast: string;
   adminFlash: boolean;
+  /* moduł Zgłoszenia (dodany po migracji – tych pól nie ma w stanie demonstratora referencyjnego) */
+  /** Zgłoszenia dodane przez mieszkańca w tej sesji demo (nigdzie nie są wysyłane). */
+  submittedReports: Report[];
+  /** Zgłoszenie otwarte na ekranie szczegółu. */
+  reportId: string | null;
+  reportForm: ReportFormState;
+  /** Zgłoszenie, przy którym pokazujemy potwierdzenie dodania. */
+  reportNoticeId: string | null;
 }
+
+/** Pola stanu dodane po migracji – pomijane przy porównaniu ze stanem demonstratora referencyjnego. */
+export const ADDED_STATE_KEYS = ["submittedReports", "reportId", "reportForm", "reportNoticeId"] as const;
 
 export function createInitialState(): AppState {
   const unread: Record<string, true> = {};
@@ -69,6 +80,7 @@ export function createInitialState(): AppState {
     sQuery: "", favs: [...INITIAL_FAVORITE_CATEGORIES], channels: { ...INITIAL_CHANNELS }, favNotify: INITIAL_FAV_NOTIFY, a11y: { ...INITIAL_A11Y },
     rep: { ...REPORT_DRAFT_DEFAULTS },
     sortOpen: null, form: { ...CAMPAIGN_FORM_DEFAULTS }, toast: "", adminFlash: false,
+    submittedReports: [], reportId: null, reportForm: { ...REPORT_FORM_DEFAULTS }, reportNoticeId: null,
   };
 }
 
@@ -102,6 +114,10 @@ export type Action =
   | { type: "patchReport"; patch: Partial<ReportDraft> }
   | { type: "resetReport" }
   | { type: "toggleSortRule"; key: WasteFractionKey }
+  | { type: "openReport"; id: string }
+  | { type: "openReportForm" }
+  | { type: "patchReportForm"; patch: Partial<ReportFormState> }
+  | { type: "submitReport" }
   /* panel administratora */
   | { type: "patchForm"; patch: Partial<CampaignForm> }
   | { type: "publish" }
@@ -195,6 +211,24 @@ export function reducer(s: AppState, a: Action): AppState {
       return { ...s, rep: { ...s.rep, ...a.patch } };
     case "resetReport":
       return { ...s, rep: { ...REPORT_DRAFT_DEFAULTS } };
+    case "openReport":
+      return go(s, "reportDetail", { reportId: a.id, reportNoticeId: s.reportNoticeId === a.id ? a.id : null });
+    /* formularz podpowiada miejscowość ustawioną w aplikacji – bez drugiego, niezależnego wyboru */
+    case "openReportForm":
+      return go(s, "reportForm", { reportForm: { ...REPORT_FORM_DEFAULTS, locality: s.loc } });
+    case "patchReportForm":
+      return { ...s, reportForm: { ...s.reportForm, ...a.patch } };
+    /* Symulacja: zgłoszenie trafia tylko do stanu demo, ze statusem „Nowe” i datą dnia demo. */
+    case "submitReport": {
+      const f = s.reportForm;
+      if (!f.type || !f.locality || !f.desc.trim()) return s;
+      const report: Report = {
+        id: "moje-" + (s.submittedReports.length + 1), title: f.type, type: f.type, locality: f.locality, place: f.place.trim(),
+        status: "new", date: s.now.slice(0, 10), desc: f.desc.trim(), mapX: 50, mapY: 50, mine: true, photo: f.photo,
+      };
+      /* zamiast formularza pokazujemy szczegół nowego zgłoszenia; „Wróć” prowadzi na listę */
+      return { ...s, submittedReports: [report].concat(s.submittedReports), screen: "reportDetail", reportId: report.id, reportNoticeId: report.id, reportForm: { ...REPORT_FORM_DEFAULTS } };
+    }
     case "toggleSortRule":
       return { ...s, sortOpen: s.sortOpen === a.key ? null : a.key };
 

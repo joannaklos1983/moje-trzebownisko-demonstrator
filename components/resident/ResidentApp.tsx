@@ -2,6 +2,9 @@
 
 import { useEffect, useRef } from "react";
 import { BottomNav } from "@/components/resident/BottomNav";
+import { CardScreen } from "@/components/resident/CardScreen";
+import { ReportDetail, ReportForm } from "@/components/resident/reports/ReportDetail";
+import { ReportsScreen } from "@/components/resident/reports/ReportsScreen";
 import { CalendarScreen } from "@/components/resident/CalendarScreen";
 import { EntryScreen } from "@/components/resident/EntryScreen";
 import { FavoritesScreen } from "@/components/resident/FavoritesScreen";
@@ -16,13 +19,13 @@ import { useAppState } from "@/lib/store";
 
 /* Aplikacja mieszkańca wewnątrz ramki telefonu. Ekran wynika ze stanu (bez adresów URL). */
 export function ResidentApp() {
-  const { screen, detailId, stubKey } = useAppState();
+  const { screen, detailId, stubKey, reportId } = useAppState();
   const scrollRef = useRef<HTMLDivElement>(null);
 
   /* po zmianie widoku przewijamy ekran na górę */
   useEffect(() => {
     if (scrollRef.current) scrollRef.current.scrollTop = 0;
-  }, [screen, detailId, stubKey]);
+  }, [screen, detailId, stubKey, reportId]);
 
   const showNav = screen !== "entry" && !(screen === "stub" && (stubKey === "register" || stubKey === "about"));
 
@@ -39,7 +42,16 @@ export function ResidentApp() {
         {screen !== "entry" && screen !== "home" && (
           <>
             <SubHeader />
-            {screen === "notifs" ? <NotificationsScreen /> : screen === "detail" ? <MessageDetail /> : screen === "search" ? <SearchScreen /> : screen === "calendar" ? <CalendarScreen /> : screen === "fav" ? <FavoritesScreen /> : <PendingScreen />}
+            {screen === "notifs" ? <NotificationsScreen />
+              : screen === "detail" ? <MessageDetail />
+              : screen === "search" ? <SearchScreen />
+              : screen === "calendar" ? <CalendarScreen />
+              : screen === "fav" ? <FavoritesScreen />
+              : screen === "reports" ? <ReportsScreen />
+              : screen === "reportDetail" ? <ReportDetail />
+              : screen === "reportForm" ? <ReportForm />
+              : screen === "stub" && stubKey === "card" ? <CardScreen />
+              : <PendingScreen />}
           </>
         )}
       </div>
