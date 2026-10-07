@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { DEMO_REPORTS, REPORT_STATUSES, REPORT_TYPES } from "../../data/reports";
-import { CARD_PARTNERS } from "../../data/startV4";
+import { CATEGORIES } from "../../data/categories";
+import { CARD_PARTNERS, CATEGORY_HERO, DEFAULT_HERO } from "../../data/startV4";
 import { REPORT_FILTERS_DEFAULT, activeReportFilters, allReports, filterReports, findReport, reportDateLabel, reportFormErrors, reportLocation } from "../../lib/reports";
 import { createInitialState } from "../../lib/state";
 import { apply, run } from "./helpers";
@@ -101,5 +102,19 @@ describe("Karta Mieszkańca – ekran koncepcyjny", () => {
       ["Salon kosmetyczny Agnieszka", "10% zniżki z Kartą Mieszkańca"],
       ["Restauracja Szamka", "15% zniżki z Kartą Mieszkańca"],
     ]);
+  });
+
+  it("karta partnera otwiera szczegół partnera; Wróć wraca na poprzedni ekran; reset czyści wybór", () => {
+    const s = run({ type: "goTarget", target: "stub:card" }, { type: "openPartner", id: "salon" });
+    expect(s).toMatchObject({ screen: "partner", partnerId: "salon" });
+    expect(apply(s, { type: "back" })).toMatchObject({ screen: "stub", stubKey: "card" });
+    expect(apply(s, { type: "reset" }).partnerId).toBeNull();
+  });
+
+  it("grafika hero: każda kategoria ma grafikę (własną albo neutralną) z katalogu start-v4", () => {
+    for (const cat of CATEGORIES) expect((CATEGORY_HERO[cat] || DEFAULT_HERO).src).toMatch(/^\/assets\/start-v4\//);
+    expect(CATEGORY_HERO["Sport i OSiR"]?.src).toContain("slider-sport");
+    expect(CATEGORY_HERO["Zdrowie"]?.src).toContain("slider-mammografia");
+    expect(CATEGORY_HERO["Edukacja"]?.src).toContain("slider-aed");
   });
 });

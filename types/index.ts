@@ -134,6 +134,7 @@ export type ScreenId =
   | "profile"
   | "reportDetail"
   | "reportForm"
+  | "partner"
   | "stub";
 
 export type StubKey =

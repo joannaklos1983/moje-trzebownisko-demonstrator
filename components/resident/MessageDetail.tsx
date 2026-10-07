@@ -1,6 +1,8 @@
 "use client";
 
+import { HeroImage } from "@/components/ui/HeroImage";
 import { Icon } from "@/components/ui/Icon";
+import { CATEGORY_HERO, DEFAULT_HERO, HERO_NOTE } from "@/data/startV4";
 import { visuallyHidden } from "@/components/ui/VisuallyHidden";
 import { confirmedExternalUrl, decorateMessage, detailMessage } from "@/lib/messages";
 import { useAppActions, useAppState } from "@/lib/store";
@@ -27,8 +29,17 @@ export function MessageDetail() {
   /* Link do oficjalnej strony pokazujemy tylko dla potwierdzonego adresu w rekordzie – nie tworzymy adresów. */
   const externalUrl = confirmedExternalUrl(message);
 
+  const hero = CATEGORY_HERO[message.cat] || DEFAULT_HERO;
+
   return (
-    <div style={{ padding: "18px 20px 32px", display: "flex", flexDirection: "column", gap: 16 }}>
+    <>
+    {/* grafika hero dobrana do kategorii – poglądowa; kategoria jest też podana tekstem */}
+    <HeroImage src={hero.src} alt="" width={hero.width} height={hero.height} badge={d.cat} note={HERO_NOTE} />
+    <div style={{ padding: "16px 20px 32px", display: "flex", flexDirection: "column", gap: 16 }}>
+      <div data-hero-meta style={{ display: "flex", flexWrap: "wrap", gap: "4px 16px", fontSize: 14, color: "#3C474C" }}>
+        <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}><Icon name="pin" size={16} style={{ color: "#2F824F" }} />{d.group === "Wszyscy" ? "Cała gmina" : d.group}</span>
+        <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}><Icon name="clock" size={16} style={{ color: "#2F824F" }} />{d.when}</span>
+      </div>
       <div style={{ display: "flex", alignItems: "flex-start", gap: 8 }}>
         <div style={{ flex: 1, minWidth: 0, display: "flex", alignItems: "center", gap: "4px 8px", flexWrap: "wrap" }}>
           <span className="pill" style={{ background: d.pillBg, color: d.pillFg }}><Icon name={d.typeIcon} size={14} />{d.typeLabel}</span>
@@ -70,5 +81,6 @@ export function MessageDetail() {
         Wysłano: {d.sentLabel}<br />Ważne: {d.validity}<br />Grupa odbiorców: {d.group}
       </div>
     </div>
+    </>
   );
 }

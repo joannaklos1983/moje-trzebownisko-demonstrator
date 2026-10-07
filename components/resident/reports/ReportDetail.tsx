@@ -1,9 +1,11 @@
 "use client";
 
 import { ReportMap, ReportStatusBadge } from "@/components/resident/reports/ReportBits";
+import { HeroImage } from "@/components/ui/HeroImage";
 import { Icon } from "@/components/ui/Icon";
 import { LOCALITIES } from "@/data/localities";
-import { REPORT_DEMO_PHOTO_NAME, REPORT_STATUSES, REPORT_TYPES } from "@/data/reports";
+import { REPORT_DEMO_PHOTO_NAME, REPORT_STATUSES, REPORT_STATUS_ORDER, REPORT_TYPES } from "@/data/reports";
+import { REPORT_DEMO_PHOTO } from "@/data/startV4";
 import { findReport, reportDateLabel, reportFormErrors } from "@/lib/reports";
 import { useAppActions, useAppState } from "@/lib/store";
 import type { IconName, Locality } from "@/types";
@@ -36,7 +38,12 @@ export function ReportDetail() {
     );
   }
 
+  const step = REPORT_STATUS_ORDER.indexOf(r.status);
+
   return (
+    <>
+    {/* przykładowe zgłoszenia mają zdjęcie poglądowe z materiałów projektu (decyzja demo) */}
+    {!r.mine && <HeroImage src={REPORT_DEMO_PHOTO.src} alt="" width={REPORT_DEMO_PHOTO.width} height={REPORT_DEMO_PHOTO.height} badge={r.type} note="Zdjęcie poglądowe" />}
     <div style={{ padding: "18px 20px 32px", display: "flex", flexDirection: "column", gap: 16 }}>
       {state.reportNoticeId === r.id && (
         <div role="status" style={{ borderRadius: 14, background: "#EEF7F0", border: "1px solid #9CC8AC", padding: "12px 14px", display: "flex", gap: 10, fontSize: 14.5, lineHeight: 1.45 }}>
@@ -72,11 +79,35 @@ export function ReportDetail() {
         <ReportMap reports={[r]} height={170} />
       </div>
 
+      <div>
+        <h3 style={{ margin: "0 0 8px", fontSize: 16, fontWeight: 700 }}>Status zgłoszenia</h3>
+        {/* oś statusów: etap osiągnięty ma znaczek i dopisek tekstowy, nie tylko kolor */}
+        <ol data-report-timeline style={{ margin: 0, padding: 0, listStyle: "none" }}>
+          {REPORT_STATUS_ORDER.map((st, i) => {
+            const reached = i <= step;
+            const last = i === REPORT_STATUS_ORDER.length - 1;
+            return (
+              <li key={st} data-reached={reached} style={{ display: "flex", gap: 12, minHeight: last ? 0 : 52 }}>
+                <span style={{ display: "flex", flexDirection: "column", alignItems: "center", flex: "none" }}>
+                  <span style={{ width: 26, height: 26, borderRadius: "50%", background: reached ? "#2F824F" : "#FFFFFF", border: `2px solid ${reached ? "#2F824F" : "#AEB9B3"}`, color: "#FFFFFF", display: "flex", alignItems: "center", justifyContent: "center" }}>{reached && <Icon name="check" size={14} />}</span>
+                  {!last && <span style={{ width: 2, flex: 1, background: i < step ? "#2F824F" : "#DFE6E2" }} />}
+                </span>
+                <span style={{ paddingBottom: last ? 0 : 14 }}>
+                  <span style={{ display: "block", fontSize: 15, fontWeight: i === step ? 700 : 500, color: reached ? "#1F2A2E" : "#5A6670" }}>{REPORT_STATUSES[st].label}{i === step ? " – obecny status" : ""}</span>
+                  {i === 0 && <span style={{ display: "block", fontSize: 13, color: "#5A6670" }}>{reportDateLabel(r.date)}</span>}
+                </span>
+              </li>
+            );
+          })}
+        </ol>
+      </div>
+
       <div style={{ borderRadius: 14, background: "#EEF6F1", padding: "14px 16px" }}>
         <h3 style={{ margin: 0, fontSize: 16, fontWeight: 700 }}>Ważne dla mieszkańca</h3>
         <p style={{ margin: "6px 0 0", fontSize: 15, lineHeight: 1.5 }}>{REPORT_STATUSES[r.status].info} Status sprawy mieszkaniec widzi w module Zgłoszenia.</p>
       </div>
     </div>
+    </>
   );
 }
 

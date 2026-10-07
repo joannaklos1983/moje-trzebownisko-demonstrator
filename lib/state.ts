@@ -64,10 +64,12 @@ export interface AppState {
   reportForm: ReportFormState;
   /** Zgłoszenie, przy którym pokazujemy potwierdzenie dodania. */
   reportNoticeId: string | null;
+  /** Partner Karty Mieszkańca otwarty na ekranie szczegółu. */
+  partnerId: string | null;
 }
 
 /** Pola stanu dodane po migracji – pomijane przy porównaniu ze stanem demonstratora referencyjnego. */
-export const ADDED_STATE_KEYS = ["submittedReports", "reportId", "reportForm", "reportNoticeId"] as const;
+export const ADDED_STATE_KEYS = ["submittedReports", "reportId", "reportForm", "reportNoticeId", "partnerId"] as const;
 
 export function createInitialState(): AppState {
   const unread: Record<string, true> = {};
@@ -80,7 +82,7 @@ export function createInitialState(): AppState {
     sQuery: "", favs: [...INITIAL_FAVORITE_CATEGORIES], channels: { ...INITIAL_CHANNELS }, favNotify: INITIAL_FAV_NOTIFY, a11y: { ...INITIAL_A11Y },
     rep: { ...REPORT_DRAFT_DEFAULTS },
     sortOpen: null, form: { ...CAMPAIGN_FORM_DEFAULTS }, toast: "", adminFlash: false,
-    submittedReports: [], reportId: null, reportForm: { ...REPORT_FORM_DEFAULTS }, reportNoticeId: null,
+    submittedReports: [], reportId: null, reportForm: { ...REPORT_FORM_DEFAULTS }, reportNoticeId: null, partnerId: null,
   };
 }
 
@@ -118,6 +120,7 @@ export type Action =
   | { type: "openReportForm" }
   | { type: "patchReportForm"; patch: Partial<ReportFormState> }
   | { type: "submitReport" }
+  | { type: "openPartner"; id: string }
   /* panel administratora */
   | { type: "patchForm"; patch: Partial<CampaignForm> }
   | { type: "publish" }
@@ -211,6 +214,8 @@ export function reducer(s: AppState, a: Action): AppState {
       return { ...s, rep: { ...s.rep, ...a.patch } };
     case "resetReport":
       return { ...s, rep: { ...REPORT_DRAFT_DEFAULTS } };
+    case "openPartner":
+      return go(s, "partner", { partnerId: a.id });
     case "openReport":
       return go(s, "reportDetail", { reportId: a.id, reportNoticeId: s.reportNoticeId === a.id ? a.id : null });
     /* formularz podpowiada miejscowość ustawioną w aplikacji – bez drugiego, niezależnego wyboru */

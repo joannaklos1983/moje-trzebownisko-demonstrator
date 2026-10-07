@@ -41,7 +41,7 @@ export function PartnersRow() {
       </div>
       <div ref={row} className="hscroll" style={{ gap: 12, padding: "12px 16px 4px" }}>
         {CARD_PARTNERS.map((p) => (
-          <button key={p.id} data-partner className="plain" onClick={() => dispatch({ type: "goTarget", target: "stub:card" })} style={{ flex: "none", width: 258, border: "1px solid #DFE6E2", borderRadius: 16, overflow: "hidden", background: "#FFFFFF" }}>
+          <button key={p.id} data-partner className="plain" onClick={() => dispatch({ type: "openPartner", id: p.id })} style={{ flex: "none", width: 258, border: "1px solid #DFE6E2", borderRadius: 16, overflow: "hidden", background: "#FFFFFF" }}>
             <Image src={p.image} alt={p.imageAlt} width={1672} height={941} sizes="258px" style={{ width: "100%", height: "auto", display: "block" }} />
             <span style={{ display: "flex", alignItems: "center", gap: 8, padding: "0 12px", minHeight: 48, fontSize: 14 }}>
               {p.locality && <span style={{ display: "inline-flex", alignItems: "center", gap: 5, color: "#3C474C" }}><Icon name="pin" size={16} style={{ color: "#5A6670" }} />{p.locality}</span>}

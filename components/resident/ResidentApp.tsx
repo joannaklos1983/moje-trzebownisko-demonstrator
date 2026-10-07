@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { BottomNav } from "@/components/resident/BottomNav";
-import { CardScreen } from "@/components/resident/CardScreen";
+import { CardScreen, PartnerScreen } from "@/components/resident/CardScreen";
 import { ReportDetail, ReportForm } from "@/components/resident/reports/ReportDetail";
 import { ReportsScreen } from "@/components/resident/reports/ReportsScreen";
 import { CalendarScreen } from "@/components/resident/CalendarScreen";
@@ -19,13 +19,13 @@ import { useAppState } from "@/lib/store";
 
 /* Aplikacja mieszkańca wewnątrz ramki telefonu. Ekran wynika ze stanu (bez adresów URL). */
 export function ResidentApp() {
-  const { screen, detailId, stubKey, reportId } = useAppState();
+  const { screen, detailId, stubKey, reportId, partnerId } = useAppState();
   const scrollRef = useRef<HTMLDivElement>(null);
 
   /* po zmianie widoku przewijamy ekran na górę */
   useEffect(() => {
     if (scrollRef.current) scrollRef.current.scrollTop = 0;
-  }, [screen, detailId, stubKey, reportId]);
+  }, [screen, detailId, stubKey, reportId, partnerId]);
 
   const showNav = screen !== "entry" && !(screen === "stub" && (stubKey === "register" || stubKey === "about"));
 
@@ -50,6 +50,7 @@ export function ResidentApp() {
               : screen === "reports" ? <ReportsScreen />
               : screen === "reportDetail" ? <ReportDetail />
               : screen === "reportForm" ? <ReportForm />
+              : screen === "partner" ? <PartnerScreen />
               : screen === "stub" && stubKey === "card" ? <CardScreen />
               : <PendingScreen />}
           </>
