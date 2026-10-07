@@ -40,10 +40,10 @@ export function FeaturedSlider() {
   const go = (i: number) => setIndex((i + count) % count);
 
   return (
-    <section aria-roledescription="karuzela" aria-label="Wyróżnione" style={{ padding: "18px 16px 0" }}>
+    <section aria-roledescription="karuzela" aria-label="Wyróżnione" style={{ padding: "14px 16px 0" }}>
       <div data-slide={slide.id} role="group" aria-roledescription="slajd" aria-label={`${index + 1} z ${count}: ${slide.title}`} aria-live={paused ? "polite" : "off"} style={{ border: "1px solid #DFE6E2", borderRadius: 20, overflow: "hidden", background: "#FFFFFF" }}>
         <div style={{ position: "relative" }}>
-          <Image src={slide.image} alt={slide.imageAlt} width={860} height={550} sizes="390px" style={{ width: "100%", height: "auto", display: "block", aspectRatio: "860 / 550", objectFit: "cover" }} />
+          <Image src={slide.image} alt={slide.imageAlt} width={860} height={550} sizes="390px" loading="eager" style={{ width: "100%", height: "auto", display: "block", aspectRatio: "860 / 550", objectFit: "cover" }} />
           <span style={{ position: "absolute", left: 12, top: 12, background: "#FFFFFF", color: "#1F6B3D", fontSize: 13, fontWeight: 700, borderRadius: 999, padding: "5px 12px" }}>{slide.badge}</span>
           {slide.imageNote && <span style={{ position: "absolute", right: 10, bottom: 10, fontSize: 11, fontWeight: 600, background: "rgba(31,42,46,.75)", color: "#FFFFFF", borderRadius: 6, padding: "3px 7px" }}>{slide.imageNote}</span>}
         </div>

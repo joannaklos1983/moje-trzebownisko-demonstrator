@@ -22,6 +22,14 @@ export interface FeaturedSlide {
 
 export const FEATURED_SLIDES: FeaturedSlide[] = [
   {
+    /* Pierwszy slajd na Starcie (decyzja właścicielki produktu).
+       DO SPRAWDZENIA: termin z grafiki (3 października 2026) jest wcześniejszy niż dzień demo (6 października). */
+    id: "mammografia", image: "/assets/start-v4/slider-mammografia.png", badge: "Zdrowie", category: "Zdrowie",
+    imageAlt: "Plansza „Bezpłatna mammografia w Trzebownisku”: 3 października 2026, godz. 9:00–15:00, przy siedzibie OSP Trzebownisko",
+    meta: "Zdrowie · Trzebownisko", title: "Bezpłatna mammografia w Trzebownisku",
+    text: "3 października 2026, godz. 9:00–15:00, przy siedzibie OSP Trzebownisko. Rejestracja: 42 254 64 17.",
+  },
+  {
     id: "aed", image: "/assets/start-v4/slider-aed.png", badge: "Edukacja", category: "Edukacja",
     imageAlt: "Plansza „Bezpieczniej w gminnych szkołach”: defibrylatory AED i apteczki dla 10 szkół i przedszkoli",
     meta: "Edukacja · 10 szkół i przedszkoli", title: "Defibrylatory AED w gminnych szkołach",
@@ -32,13 +40,6 @@ export const FEATURED_SLIDES: FeaturedSlide[] = [
     imageAlt: "Plansza „Gramy razem”: dzieci grające w piłkę nożną na stadionie w Wólce Podleśnej",
     meta: "Sport · Stadion w Wólce Podleśnej", title: "Treningi piłki nożnej dla dzieci",
     text: "Organizator: LKS „Leśna” Wólka Podleśna. Terminy i godziny treningów u organizatora.",
-  },
-  {
-    /* DO SPRAWDZENIA: termin z grafiki (3 października 2026) jest wcześniejszy niż dzień demo (6 października). */
-    id: "mammografia", image: "/assets/start-v4/slider-mammografia.png", badge: "Zdrowie", category: "Zdrowie",
-    imageAlt: "Plansza „Bezpłatna mammografia w Trzebownisku”: 3 października 2026, godz. 9:00–15:00, przy siedzibie OSP Trzebownisko",
-    meta: "Zdrowie · Trzebownisko", title: "Bezpłatna mammografia w Trzebownisku",
-    text: "3 października 2026, godz. 9:00–15:00, przy siedzibie OSP Trzebownisko. Rejestracja: 42 254 64 17.",
   },
   {
     /* DO SPRAWDZENIA: grafika nie ma tytułu ani opisu – tekst jest ogólnym wejściem do kategorii, nie informacją o konkretnej inwestycji. */

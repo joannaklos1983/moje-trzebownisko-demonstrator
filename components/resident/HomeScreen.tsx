@@ -9,12 +9,13 @@ import { TopicsRow } from "@/components/resident/start/TopicsRow";
 import { Icon } from "@/components/ui/Icon";
 import { useAppActions } from "@/lib/store";
 
-/* Start mieszkańca (wersja start-redesign): „Ważne teraz” → wyszukiwarka → Usługi → wyróżnione
-   → tematy → Karta Mieszkańca → partnerzy → Kalendarz gminny. Logika bez zmian – z lib/. */
+/* Start mieszkańca (wersja start-redesign): wyróżnione (slider ze zdjęciem) → „Ważne teraz”
+   → wyszukiwarka → Usługi → tematy → Karta Mieszkańca → partnerzy → Kalendarz gminny. Logika bez zmian – z lib/. */
 export function HomeScreen() {
   const { dispatch } = useAppActions();
   return (
     <div style={{ padding: "0 0 32px" }}>
+      <FeaturedSlider />
       <ImportantStrip />
 
       <div style={{ padding: "2px 16px 0" }}>
@@ -25,7 +26,6 @@ export function HomeScreen() {
       </div>
 
       <ServiceChips />
-      <FeaturedSlider />
       <TopicsRow />
       <ResidentCardPromo />
       <PartnersRow />
